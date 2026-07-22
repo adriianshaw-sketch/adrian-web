@@ -1,8 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Anti-FOUC de idioma: fija <html lang> antes del primer paint -->
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('aw-lang');
+        if (l !== 'es' && l !== 'en') {
+          l = String(navigator.language || 'es').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+        }
+        var d = document.documentElement;
+        d.lang = l;
+        d.setAttribute('data-lang', l);
+        var n = navigator;
+        var lite = (n.connection && n.connection.saveData === true) ||
+                   (n.deviceMemory && n.deviceMemory <= 4) ||
+                   (n.hardwareConcurrency && n.hardwareConcurrency <= 4) ||
+                   matchMedia('(prefers-reduced-data: reduce)').matches;
+        if (lite) d.setAttribute('data-lite', '');
+      } catch (e) {}
+    })();
+  </script>
   <title>Adrian Web — Diseño web para negocios que no quieren pasar desapercibidos</title>
   <meta name="description" content="Diseño webs a medida para negocios locales. Te enseño una demo real antes de que pagues nada. Respuesta en menos de 24 h." />
   <meta name="theme-color" content="#08080A" />
@@ -12,6 +32,7 @@
   <meta property="og:url" content="https://adrianweb.es/" />
   <meta property="og:image" content="https://adrianweb.es/og.jpg" />
   <meta property="og:locale" content="es_ES" />
+  <meta property="og:locale:alternate" content="en_GB" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Adrian Web — No te lo cuento. Te lo enseño." />
   <meta name="twitter:description" content="Webs que venden para negocios locales. Demo gratis, no pagas hasta verla." />
@@ -19,14 +40,14 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://adrianweb.es/" />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"ProfessionalService","name":"Adrian Web","description":"Diseño de webs a medida para negocios locales. Te enseño una demo real antes de que pagues nada. Respuesta en menos de 24 h.","url":"https://adrianweb.es/","image":"https://adrianweb.es/og.jpg","areaServed":{"@type":"Country","name":"España"},"priceRange":"€€","availableLanguage":"es","sameAs":["https://wa.me/34655334170"],"contactPoint":{"@type":"ContactPoint","contactType":"sales","availableLanguage":"Spanish"},"makesOffer":{"@type":"Offer","name":"Diseño web con demo gratis antes de pagar","priceCurrency":"EUR"}}
+  {"@context":"https://schema.org","@type":"ProfessionalService","name":"Adrian Web","description":"Diseño de webs a medida para negocios locales. Te enseño una demo real antes de que pagues nada. Respuesta en menos de 24 h.","url":"https://adrianweb.es/","image":"https://adrianweb.es/og.jpg","areaServed":{"@type":"Country","name":"España"},"priceRange":"€€","availableLanguage":["es","en"],"sameAs":["https://wa.me/34655334170"],"contactPoint":{"@type":"ContactPoint","contactType":"sales","availableLanguage":["Spanish","English"]},"makesOffer":{"@type":"Offer","name":"Diseño web con demo gratis antes de pagar","priceCurrency":"EUR"}}
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
   <!-- Film grain -->
@@ -34,12 +55,12 @@
   <!-- Editorial rails (field-guide framing) -->
   <div class="rails" aria-hidden="true"><span></span><span></span></div>
   <!-- Handcrafted cursor -->
-  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label">La quiero&nbsp;↗</span></div>
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label" data-i18n="cursor.label">La quiero&nbsp;↗</span></div>
 
   <!-- ===== Nav ===== -->
   <header class="nav" id="nav">
     <div class="wrap nav__row">
-      <a href="#top" class="brand" aria-label="Adrian Web — inicio">
+      <a href="#top" class="brand" aria-label="Adrian Web — inicio" data-i18n-aria="nav.brandAria">
         <svg class="brand__mark" viewBox="0 0 80 44" width="34" height="19" aria-hidden="true">
           <path class="aw-slash" d="M8 38 L16 16"></path>
           <path class="aw-letters" d="M15 40 L26 6 L37 40 M20.5 29 H31.5 M42 6 L49 40 L57 20 L65 40 L72 6"></path>
@@ -47,23 +68,28 @@
         <span class="brand__text">Adrian Web</span>
       </a>
 
-      <nav class="nav__links" aria-label="Principal">
-        <a href="#work"><span class="idx">01</span> Proyectos</a>
-        <a href="#metodo"><span class="idx">02</span> Método</a>
-        <a href="#estudio"><span class="idx">03</span> Estudio</a>
+      <nav class="nav__links" aria-label="Principal" data-i18n-aria="nav.mainAria">
+        <a href="#work"><span class="idx">01</span> <span data-i18n="nav.work">Proyectos</span></a>
+        <a href="#metodo"><span class="idx">02</span> <span data-i18n="nav.method">Método</span></a>
+        <a href="#estudio"><span class="idx">03</span> <span data-i18n="nav.reviews">Estudio</span></a>
       </nav>
 
-      <a class="wa-link" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener">
+      <div class="lang" role="group" aria-label="Idioma" data-i18n-aria="nav.langAria">
+        <button type="button" class="lang__btn is-on" data-lang-set="es" aria-pressed="true" lang="es">ES</button>
+        <button type="button" class="lang__btn" data-lang-set="en" aria-pressed="false" lang="en">EN</button>
+      </div>
+
+      <a class="wa-link" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener noreferrer">
         WhatsApp <span class="wa-link__arrow" aria-hidden="true">↗</span>
       </a>
 
-      <button class="burger" id="burger" aria-label="Menú" aria-expanded="false"><span></span><span></span></button>
+      <button class="burger" id="burger" aria-label="Menú" data-i18n-aria="nav.menuAria" aria-expanded="false" aria-controls="drawer"><span></span><span></span></button>
     </div>
     <div class="nav__drawer" id="drawer" aria-hidden="true">
-      <a href="#work">Proyectos</a>
-      <a href="#metodo">Método</a>
-      <a href="#estudio">Estudio</a>
-      <a href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis." target="_blank" rel="noopener" class="drawer__cta">Pídeme una demo gratis ↗</a>
+      <a href="#work" data-i18n="nav.work">Proyectos</a>
+      <a href="#metodo" data-i18n="nav.method">Método</a>
+      <a href="#estudio" data-i18n="nav.reviews">Estudio</a>
+      <a href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis." target="_blank" rel="noopener noreferrer" class="drawer__cta" data-i18n="nav.drawerCta">Pídeme una demo gratis ↗</a>
     </div>
   </header>
 
@@ -73,26 +99,26 @@
     <section class="hero">
       <div class="wrap">
         <h1 class="hero__title">
-          <span class="line" data-line><span>Que te encuentren.</span></span>
-          <span class="line" data-line><span>Que les guste.</span></span>
-          <span class="line line--accent" data-line><span class="grad-text">Que tu negocio crezca.</span></span>
+          <span class="line" data-line><span data-i18n="hero.l1">Que te encuentren.</span></span>
+          <span class="line" data-line><span data-i18n="hero.l2">Que les guste.</span></span>
+          <span class="line line--accent" data-line><span class="grad-text" data-i18n="hero.l3">Que tu negocio crezca.</span></span>
         </h1>
 
         <div class="hero__foot">
-          <p class="hero__lead" data-line>
+          <p class="hero__lead" data-line data-i18n-html="hero.lead">
             Te diseño y publico una web moderna, rápida y hecha para vender —
             lista en pocos días. La ves terminada <em>antes</em> de pagar nada.
           </p>
           <div class="hero__cta" data-line>
-            <a class="btn btn--solid btn--beacon" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener">
-              Pídeme una demo gratis
+            <a class="btn btn--solid btn--beacon btn--magnetic" data-magnetic href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener noreferrer">
+              <span data-i18n="cta.demo">Pídeme una demo gratis</span>
               <span class="btn__ico" aria-hidden="true">↗</span>
             </a>
-            <a class="btn btn--line" href="#work">Ver proyectos</a>
+            <a class="btn btn--line" href="#work" data-i18n="cta.work">Ver proyectos</a>
           </div>
         </div>
 
-        <p class="hero__meta mono" data-line>Sin compromiso &nbsp;·&nbsp; Respuesta en 24&nbsp;h &nbsp;·&nbsp; No pagas hasta verla</p>
+        <p class="hero__meta mono" data-line data-i18n-html="hero.meta">Sin compromiso &nbsp;·&nbsp; Respuesta en 24&nbsp;h &nbsp;·&nbsp; No pagas hasta verla</p>
       </div>
     </section>
 
@@ -100,9 +126,9 @@
     <section class="work" id="work">
       <div class="wrap">
         <header class="head">
-          <span class="head__label mono" data-reveal>[ Proyectos ]</span>
-          <h2 class="head__title" data-reveal>No te lo cuento.<br>Te lo enseño.</h2>
-          <p class="head__note" data-reveal>Tres negocios reales. Tres necesidades distintas. Cero plantillas.</p>
+          <span class="head__label mono" data-reveal data-i18n="work.label">[ Proyectos ]</span>
+          <h2 class="head__title" data-reveal data-i18n-html="work.title">No te lo cuento.<br>Te lo enseño.</h2>
+          <p class="head__note" data-reveal data-i18n="work.note">Tres negocios reales. Tres necesidades distintas. Cero plantillas.</p>
         </header>
       </div>
 
@@ -116,35 +142,35 @@
                 <span class="browser__url mono">brasa.rest</span>
               </div>
               <div class="site site--brasa">
-                <img class="site__bg" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1100&q=72&auto=format&fit=crop" alt="Interior del restaurante Brasa" loading="lazy" />
+                <img class="site__bg" src="assets/img/demo-brasa.webp" width="1200" height="800" alt="Interior del restaurante Brasa" data-i18n-alt="c1.imgAlt" loading="lazy" />
                 <div class="site__scrim"></div>
                 <div class="site__nav">
                   <span class="site__logo site__logo--serif">BRASA</span>
-                  <span class="site__menu"><a>Carta</a><a>Reservas</a><a>Contacto</a></span>
+                  <span class="site__menu"><a data-i18n="c1.m1">Carta</a><a data-i18n="c1.m2">Reservas</a><a data-i18n="c1.m3">Contacto</a></span>
                 </div>
                 <div class="site__chip site__chip--tr">
-                  <span class="site__chip-star" aria-hidden="true">★</span> 4,8 <span class="site__chip-dim">· 214 reseñas</span>
+                  <span class="site__chip-star" aria-hidden="true">★</span> 4,8 <span class="site__chip-dim" data-i18n="c1.chip">· 214 reseñas</span>
                 </div>
                 <div class="site__hero site__hero--center">
-                  <span class="site__eyebrow">Cocina al fuego · Valencia</span>
-                  <h3 class="site__h1 site__h1--serif">Sabor que<br>se recuerda</h3>
-                  <span class="site__btn site__btn--warm">Reservar mesa</span>
+                  <span class="site__eyebrow" data-i18n="c1.eyebrow">Cocina al fuego · Valencia</span>
+                  <h3 class="site__h1 site__h1--serif" data-i18n-html="c1.h1">Sabor que<br>se recuerda</h3>
+                  <span class="site__btn site__btn--warm" data-i18n="c1.btn">Reservar mesa</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="case__info">
-            <span class="case__idx mono">01 — Restaurante · Valencia</span>
+            <span class="case__idx mono" data-i18n="c1.idx">01 — Restaurante · Valencia</span>
             <h3 class="case__name">Brasa</h3>
-            <p class="case__need">
+            <p class="case__need" data-i18n-html="c1.need">
               <strong>El problema:</strong> mesas vacías entre semana y comisiones del 20&nbsp;% en las apps de reservas.
             </p>
-            <p class="case__sol">
+            <p class="case__sol" data-i18n-html="c1.sol">
               <strong>La web:</strong> reservas directas sin intermediarios, carta que da hambre y una primera imagen a la altura de la cocina.
             </p>
             <div class="case__result">
-              <span class="case__result-num">+38%</span>
-              <span class="case__result-lbl"><strong>reservas</strong> en los primeros 2 meses<br><span class="mono">Caso real de cliente</span></span>
+              <span class="case__result-num" data-count="38" data-count-prefix="+" data-count-suffix="%">+38%</span>
+              <span class="case__result-lbl" data-i18n-html="c1.result"><strong>reservas</strong> en los primeros 2 meses<br><span class="mono">Caso real de cliente</span></span>
               <svg class="case__spark" viewBox="0 0 100 40" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="spark-a" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="#3B6DFF" stop-opacity=".4"/><stop offset="1" stop-color="#3B6DFF" stop-opacity="0"/>
@@ -153,7 +179,7 @@
                 <path class="case__spark-line" d="M0 34 C12 32.5 22 30 32 28 C44 25.5 54 22 66 18 C78 14 90 9.5 100 7"/>
               </svg>
             </div>
-            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Brasa%20para%20mi%20negocio." target="_blank" rel="noopener">→ Quiero una web así para mi negocio</a>
+            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Brasa%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" data-i18n="case.cta">→ Quiero una web así para mi negocio</a>
           </div>
         </div>
       </article>
@@ -170,35 +196,35 @@
               <div class="site site--vida">
                 <div class="site__nav site__nav--light">
                   <span class="site__logo site__logo--vida">◇ Vida<span>dental</span></span>
-                  <span class="site__menu site__menu--light"><a>Tratamientos</a><a>Equipo</a><a class="pill">Pedir cita</a></span>
+                  <span class="site__menu site__menu--light"><a data-i18n="c2.m1">Tratamientos</a><a data-i18n="c2.m2">Equipo</a><a class="pill" data-i18n="c2.m3">Pedir cita</a></span>
                 </div>
                 <div class="site__split">
                   <div class="site__split-text">
-                    <span class="site__eyebrow site__eyebrow--dark">Clínica dental · Valencia</span>
-                    <h3 class="site__h1 site__h1--dark">Tu mejor sonrisa<br>empieza aquí</h3>
-                    <p class="site__p">Primera visita y estudio sin coste. Sin listas de espera.</p>
-                    <span class="site__btn site__btn--teal">Pedir cita online</span>
+                    <span class="site__eyebrow site__eyebrow--dark" data-i18n="c2.eyebrow">Clínica dental · Valencia</span>
+                    <h3 class="site__h1 site__h1--dark" data-i18n-html="c2.h1">Tu mejor sonrisa<br>empieza aquí</h3>
+                    <p class="site__p" data-i18n="c2.p">Primera visita y estudio sin coste. Sin listas de espera.</p>
+                    <span class="site__btn site__btn--teal" data-i18n="c2.btn">Pedir cita online</span>
                   </div>
                   <div class="site__split-img">
-                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=760&q=72&auto=format&fit=crop" alt="Paciente sonriendo en la clínica dental" loading="lazy" />
-                    <div class="site__chip site__chip--vida"><span class="site__chip-dot site__chip-dot--teal" aria-hidden="true"></span>Hoy · 17:30 libre</div>
+                    <img src="assets/img/demo-dental.webp" width="900" height="600" alt="Paciente sonriendo en la clínica dental" data-i18n-alt="c2.imgAlt" loading="lazy" />
+                    <div class="site__chip site__chip--vida"><span class="site__chip-dot site__chip-dot--teal" aria-hidden="true"></span><span data-i18n="c2.chip">Hoy · 17:30 libre</span></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="case__info">
-            <span class="case__idx mono">02 — Clínica dental · Valencia</span>
+            <span class="case__idx mono" data-i18n="c2.idx">02 — Clínica dental · Valencia</span>
             <h3 class="case__name">Vida</h3>
-            <p class="case__need">
+            <p class="case__need" data-i18n-html="c2.need">
               <strong>El problema:</strong> mucha gente busca dentista en Google, pero llegaba a una web anticuada y se iba a la de al lado.
             </p>
-            <p class="case__sol">
+            <p class="case__sol" data-i18n-html="c2.sol">
               <strong>La web:</strong> limpia, tranquila y con un botón de cita imposible de no ver. Confianza desde el primer segundo.
             </p>
             <div class="case__result">
-              <span class="case__result-num">×3</span>
-              <span class="case__result-lbl"><strong>citas online</strong> en 90 días<br><span class="mono">Caso real de cliente</span></span>
+              <span class="case__result-num" data-count="3" data-count-prefix="×">×3</span>
+              <span class="case__result-lbl" data-i18n-html="c2.result"><strong>citas online</strong> en 90 días<br><span class="mono">Caso real de cliente</span></span>
               <svg class="case__spark" viewBox="0 0 100 40" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="spark-b" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="#3B6DFF" stop-opacity=".4"/><stop offset="1" stop-color="#3B6DFF" stop-opacity="0"/>
@@ -207,7 +233,7 @@
                 <path class="case__spark-line" d="M0 35 C14 34.5 26 34 38 32.5 C50 31 60 27 70 21 C80 15 92 8 100 4.5"/>
               </svg>
             </div>
-            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Vida%20para%20mi%20negocio." target="_blank" rel="noopener">→ Quiero una web así para mi negocio</a>
+            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Vida%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" data-i18n="case.cta">→ Quiero una web así para mi negocio</a>
           </div>
         </div>
       </article>
@@ -222,33 +248,33 @@
                 <span class="browser__url mono">pulso.fit</span>
               </div>
               <div class="site site--forja">
-                <img class="site__bg" src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=1100&q=72&auto=format&fit=crop" alt="Atleta entrenando en el gimnasio Pulso" loading="lazy" />
+                <img class="site__bg" src="assets/img/demo-pulso.webp" width="1200" height="1800" alt="Atleta entrenando en el gimnasio Pulso" data-i18n-alt="c3.imgAlt" loading="lazy" />
                 <div class="site__scrim site__scrim--forja"></div>
                 <div class="site__nav">
                   <span class="site__logo site__logo--forja">PULSO</span>
-                  <span class="site__menu"><a>Clases</a><a>Precios</a><a>Contacto</a></span>
+                  <span class="site__menu"><a data-i18n="c3.m1">Clases</a><a data-i18n="c3.m2">Precios</a><a data-i18n="c3.m3">Contacto</a></span>
                 </div>
-                <div class="site__chip site__chip--tr"><span class="site__chip-dot site__chip-dot--green" aria-hidden="true"></span>+52 socios este trimestre</div>
+                <div class="site__chip site__chip--tr"><span class="site__chip-dot site__chip-dot--green" aria-hidden="true"></span><span data-i18n="c3.chip">+52 socios este trimestre</span></div>
                 <div class="site__hero">
-                  <span class="site__eyebrow site__eyebrow--forja">Gimnasio · Alicante</span>
-                  <h3 class="site__h1 site__h1--forja">Entrena<br>como nunca</h3>
-                  <span class="site__btn site__btn--forja">Prueba gratis 7 días</span>
+                  <span class="site__eyebrow site__eyebrow--forja" data-i18n="c3.eyebrow">Gimnasio · Alicante</span>
+                  <h3 class="site__h1 site__h1--forja" data-i18n-html="c3.h1">Entrena<br>como nunca</h3>
+                  <span class="site__btn site__btn--forja" data-i18n="c3.btn">Prueba gratis 7 días</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="case__info">
-            <span class="case__idx mono">03 — Gimnasio · Alicante</span>
+            <span class="case__idx mono" data-i18n="c3.idx">03 — Gimnasio · Alicante</span>
             <h3 class="case__name">Pulso</h3>
-            <p class="case__need">
+            <p class="case__need" data-i18n-html="c3.need">
               <strong>El problema:</strong> mucho boca a boca, pero ni rastro online. Los que buscaban gimnasio nuevo ni lo encontraban.
             </p>
-            <p class="case__sol">
+            <p class="case__sol" data-i18n-html="c3.sol">
               <strong>La web:</strong> energía desde el primer scroll y una prueba gratis que se pide en un clic. Socios nuevos cada semana.
             </p>
             <div class="case__result">
-              <span class="case__result-num">+52</span>
-              <span class="case__result-lbl"><strong>socios nuevos</strong> el primer trimestre<br><span class="mono">Caso real de cliente</span></span>
+              <span class="case__result-num" data-count="52" data-count-prefix="+">+52</span>
+              <span class="case__result-lbl" data-i18n-html="c3.result"><strong>socios nuevos</strong> el primer trimestre<br><span class="mono">Caso real de cliente</span></span>
               <svg class="case__spark" viewBox="0 0 100 40" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="spark-c" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="#3B6DFF" stop-opacity=".4"/><stop offset="1" stop-color="#3B6DFF" stop-opacity="0"/>
@@ -257,7 +283,7 @@
                 <path class="case__spark-line" d="M0 33 C10 32 18 29 28 27.5 C36 26.3 44 26 52 23 C62 19.2 68 15 78 12.5 C86 10.5 94 8 100 6.5"/>
               </svg>
             </div>
-            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Pulso%20para%20mi%20negocio." target="_blank" rel="noopener">→ Quiero una web así para mi negocio</a>
+            <a class="case__cta mono" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20web%20como%20la%20de%20Pulso%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" data-i18n="case.cta">→ Quiero una web así para mi negocio</a>
           </div>
         </div>
       </article>
@@ -278,9 +304,9 @@
             <path class="growth__line" d="M8,104 L48,92 C64,88 76,96 92,88 C110,78 122,84 140,72 C158,60 170,66 188,52 C206,40 222,46 240,30 C256,17 272,22 296,10" fill="none"/>
             <circle class="growth__dot" cx="296" cy="10" r="4"/>
           </svg>
-          <span class="growth__badge mono">↗ tus ventas</span>
+          <span class="growth__badge mono" data-i18n="manifesto.badge">↗ tus ventas</span>
         </div>
-        <p class="manifesto__text" data-reveal>
+        <p class="manifesto__text" data-reveal data-i18n-html="manifesto.text">
           La mayoría de webs son <span class="strike">plantillas</span> disfrazadas.
           Yo diseño <em>la tuya</em>. Pensada para tu negocio, tu cliente y una sola cosa:
           <span class="hl">que aumenten tus ventas</span>.
@@ -292,40 +318,40 @@
     <section class="method" id="metodo">
       <div class="wrap method__grid">
         <div class="method__aside">
-          <span class="head__label mono" data-reveal>[ Método ]</span>
-          <h2 class="method__title" data-reveal>Rápido, claro<br>y sin riesgo.</h2>
-          <p class="method__note" data-reveal>Cuatro pasos, pocos días y no pagas nada hasta ver tu web terminada. Del resto me encargo yo.</p>
-          <a class="btn btn--solid method__cta" data-reveal href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener">
-            Empezar por WhatsApp <span class="btn__ico" aria-hidden="true">↗</span>
+          <span class="head__label mono" data-reveal data-i18n="method.label">[ Método ]</span>
+          <h2 class="method__title" data-reveal data-i18n-html="method.title">Rápido, claro<br>y sin riesgo.</h2>
+          <p class="method__note" data-reveal data-i18n="method.note">Cuatro pasos, pocos días y no pagas nada hasta ver tu web terminada. Del resto me encargo yo.</p>
+          <a class="btn btn--solid method__cta" data-reveal href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener noreferrer">
+            <span data-i18n="method.cta">Empezar por WhatsApp</span> <span class="btn__ico" aria-hidden="true">↗</span>
           </a>
         </div>
         <ol class="steps">
           <li class="step" data-reveal>
             <span class="step__i mono">01</span>
             <div>
-              <h3>Hablamos</h3>
-              <p>Me escribes por WhatsApp y me cuentas tu negocio. Te respondo en menos de 24 horas.</p>
+              <h3 data-i18n="step1.t">Hablamos</h3>
+              <p data-i18n="step1.d">Me escribes por WhatsApp y me cuentas tu negocio. Te respondo en menos de 24 horas.</p>
             </div>
           </li>
           <li class="step" data-reveal>
             <span class="step__i mono">02</span>
             <div>
-              <h3>Te la enseño</h3>
-              <p>Diseño una demo real de tu web. Gratis. La ves y decides con ella delante, no con promesas.</p>
+              <h3 data-i18n="step2.t">Te la enseño</h3>
+              <p data-i18n="step2.d">Diseño una demo real de tu web. Gratis. La ves y decides con ella delante, no con promesas.</p>
             </div>
           </li>
           <li class="step" data-reveal>
             <span class="step__i mono">03</span>
             <div>
-              <h3>La publicamos</h3>
-              <p>Si te convence, en pocos días está online, rápida y lista para recibir clientes.</p>
+              <h3 data-i18n="step3.t">La publicamos</h3>
+              <p data-i18n="step3.d">Si te convence, en pocos días está online, rápida y lista para recibir clientes.</p>
             </div>
           </li>
           <li class="step" data-reveal>
             <span class="step__i mono">04</span>
             <div>
-              <h3>Yo me ocupo</h3>
-              <p>Hosting, seguridad, cambios y publicidad para atraer clientes. Tú, a lo tuyo.</p>
+              <h3 data-i18n="step4.t">Yo me ocupo</h3>
+              <p data-i18n="step4.d">Hosting, seguridad, cambios y publicidad para atraer clientes. Tú, a lo tuyo.</p>
             </div>
           </li>
         </ol>
@@ -336,77 +362,77 @@
     <section class="reviews" id="estudio">
       <div class="wrap">
         <header class="head reviews__head">
-          <span class="head__label mono" data-reveal>[ Opiniones ]</span>
-          <h2 class="head__title" data-reveal>Negocios de aquí<br>que ya lo notan.</h2>
-          <p class="head__note" data-reveal>Clientes reales de la Comunidad Valenciana.</p>
+          <span class="head__label mono" data-reveal data-i18n="rev.label">[ Opiniones ]</span>
+          <h2 class="head__title" data-reveal data-i18n-html="rev.title">Negocios de aquí<br>que ya lo notan.</h2>
+          <p class="head__note" data-reveal data-i18n="rev.note">Clientes reales de la Comunidad Valenciana.</p>
         </header>
       </div>
       <div class="reviews__marquee" data-reveal>
         <div class="reviews__track" id="revTrack">
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ +47% ventas</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev1.gain">↗ +47% ventas</span>
             </div>
-            <blockquote class="rev__q">Confié en Adrián para la web de mi tienda de ropa y ahora tengo a los turistas entrando sin parar. No sé cómo darle las gracias.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev1.q">Confié en Adrián para la web de mi tienda de ropa y ahora tengo a los turistas entrando sin parar. No sé cómo darle las gracias.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#E0673A;--b:#b8461f">M</span>
-              <span class="rev__meta"><strong>Marta Císcar</strong><span class="mono">Tienda de ropa · Valencia</span></span>
+              <span class="rev__meta"><strong>Marta Císcar</strong><span class="mono" data-i18n="rev1.role">Tienda de ropa · Valencia</span></span>
             </figcaption>
           </figure>
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ +41% reservas</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev2.gain">↗ +41% reservas</span>
             </div>
-            <blockquote class="rev__q">Pensaba que una web así costaba una fortuna. Me enseñó la demo, me encantó, y en tres días estaba recibiendo reservas.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev2.q">Pensaba que una web así costaba una fortuna. Me enseñó la demo, me encantó, y en tres días estaba recibiendo reservas.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#3B6DFF;--b:#2450d8">M</span>
-              <span class="rev__meta"><strong>María Serrano</strong><span class="mono">Restaurante · Valencia</span></span>
+              <span class="rev__meta"><strong>María Serrano</strong><span class="mono" data-i18n="rev2.role">Restaurante · Valencia</span></span>
             </figcaption>
           </figure>
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ ×3 citas</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev3.gain">↗ ×3 citas</span>
             </div>
-            <blockquote class="rev__q">En un mes la agenda de citas no paraba. Trato cercano, todo por WhatsApp y sin líos técnicos.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev3.q">En un mes la agenda de citas no paraba. Trato cercano, todo por WhatsApp y sin líos técnicos.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#0E8C8C;--b:#0a6b6b">Ó</span>
-              <span class="rev__meta"><strong>Óscar Ferrer</strong><span class="mono">Clínica dental · Alicante</span></span>
+              <span class="rev__meta"><strong>Óscar Ferrer</strong><span class="mono" data-i18n="rev3.role">Clínica dental · Alicante</span></span>
             </figcaption>
           </figure>
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ +52 socios</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev4.gain">↗ +52 socios</span>
             </div>
-            <blockquote class="rev__q">Rápido, profesional y siempre disponible. Los socios nuevos llegan solos desde la web.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev4.q">Rápido, profesional y siempre disponible. Los socios nuevos llegan solos desde la web.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#7A5BE0;--b:#5a3fc0">S</span>
-              <span class="rev__meta"><strong>Sara Gil</strong><span class="mono">Gimnasio · Gandía</span></span>
+              <span class="rev__meta"><strong>Sara Gil</strong><span class="mono" data-i18n="rev4.role">Gimnasio · Gandía</span></span>
             </figcaption>
           </figure>
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ +29% citas</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev5.gain">↗ +29% citas</span>
             </div>
-            <blockquote class="rev__q">Mi peluquería siempre estuvo llena de vecinos; ahora también de gente que me encuentra en Google.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev5.q">Mi peluquería siempre estuvo llena de vecinos; ahora también de gente que me encuentra en Google.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#D98A2B;--b:#b06e1c">N</span>
-              <span class="rev__meta"><strong>Noelia Part</strong><span class="mono">Peluquería · Dénia</span></span>
+              <span class="rev__meta"><strong>Noelia Part</strong><span class="mono" data-i18n="rev5.role">Peluquería · Dénia</span></span>
             </figcaption>
           </figure>
           <figure class="rev">
             <div class="rev__top">
-              <div class="rev__stars" aria-label="5 de 5">★★★★★</div>
-              <span class="rev__gain mono">↗ +34% pedidos</span>
+              <div class="rev__stars" aria-label="5 de 5" data-i18n-aria="rev.stars">★★★★★</div>
+              <span class="rev__gain mono" data-i18n="rev6.gain">↗ +34% pedidos</span>
             </div>
-            <blockquote class="rev__q">La web quedó preciosa y la tuvo lista en nada. Cero complicaciones y no pagué hasta verla terminada.</blockquote>
+            <blockquote class="rev__q" data-i18n="rev6.q">La web quedó preciosa y la tuvo lista en nada. Cero complicaciones y no pagué hasta verla terminada.</blockquote>
             <figcaption class="rev__by">
               <span class="rev__ava" style="--a:#3B6DFF;--b:#2450d8">V</span>
-              <span class="rev__meta"><strong>Vicent Broch</strong><span class="mono">Cafetería · Castellón</span></span>
+              <span class="rev__meta"><strong>Vicent Broch</strong><span class="mono" data-i18n="rev6.role">Cafetería · Castellón</span></span>
             </figcaption>
           </figure>
         </div>
@@ -417,22 +443,22 @@
     <section class="promise">
       <div class="wrap promise__inner">
         <div class="promise__head">
-          <span class="head__label mono" data-reveal>[ Sin riesgo ]</span>
-          <h2 class="promise__title" data-reveal>Primero la ves.<br><span class="i">Luego decides.</span></h2>
-          <p class="promise__note" data-reveal>Te preparo una demo real de tu web sin coste. Si no te enamora, no pagas ni un euro. Así de simple.</p>
+          <span class="head__label mono" data-reveal data-i18n="promise.label">[ Sin riesgo ]</span>
+          <h2 class="promise__title" data-reveal data-i18n-html="promise.title">Primero la ves.<br><span class="i">Luego decides.</span></h2>
+          <p class="promise__note" data-reveal data-i18n="promise.note">Te preparo una demo real de tu web sin coste. Si no te enamora, no pagas ni un euro. Así de simple.</p>
         </div>
         <ul class="promise__list">
           <li class="promise__item" data-reveal>
             <span class="promise__check" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20.4 8.2 19 6.8z"/></svg></span>
-            <span>Ves tu web <strong>terminada antes</strong> de pagar nada</span>
+            <span data-i18n-html="promise.i1">Ves tu web <strong>terminada antes</strong> de pagar nada</span>
           </li>
           <li class="promise__item" data-reveal>
             <span class="promise__check" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20.4 8.2 19 6.8z"/></svg></span>
-            <span>Sin permanencia y <strong>sin adelantos</strong></span>
+            <span data-i18n-html="promise.i2">Sin permanencia y <strong>sin adelantos</strong></span>
           </li>
           <li class="promise__item" data-reveal>
             <span class="promise__check" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20.4 8.2 19 6.8z"/></svg></span>
-            <span>Trato <strong>directo conmigo</strong> por WhatsApp, siempre</span>
+            <span data-i18n-html="promise.i3">Trato <strong>directo conmigo</strong> por WhatsApp, siempre</span>
           </li>
         </ul>
       </div>
@@ -441,12 +467,12 @@
     <!-- ===== CTA final ===== -->
     <section class="close">
       <div class="wrap close__inner">
-        <span class="head__label mono" data-reveal>[ Hablemos ]</span>
-        <h2 class="close__title" data-reveal>
+        <span class="head__label mono" data-reveal data-i18n="close.label">[ Hablemos ]</span>
+        <h2 class="close__title" data-reveal data-i18n-html="close.title">
           Vamos a hacer que tu negocio se vea <span class="i">como se merece.</span>
         </h2>
-        <a class="btn btn--solid btn--big" data-reveal href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener">
-          Escríbeme por WhatsApp <span class="btn__ico" aria-hidden="true">↗</span>
+        <a class="btn btn--solid btn--big" data-reveal href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis%20para%20la%20web%20de%20mi%20negocio." target="_blank" rel="noopener noreferrer">
+          <span data-i18n="close.cta">Escríbeme por WhatsApp</span> <span class="btn__ico" aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
@@ -461,39 +487,39 @@
             </svg>
             <span class="brand__text">Adrian Web</span>
           </a>
-          <p class="foot__tag">Diseño web a medida para negocios de la Comunidad Valenciana y toda España.</p>
-          <span class="foot__status mono"><span class="foot__status-dot"></span>Operativo online · Respuesta en 24&nbsp;h</span>
+          <p class="foot__tag" data-i18n="foot.tag">Diseño web a medida para negocios de la Comunidad Valenciana y toda España.</p>
+          <span class="foot__status mono"><span class="foot__status-dot"></span><span data-i18n-html="foot.status">Operativo online · Respuesta en 24&nbsp;h</span></span>
         </div>
 
-        <nav class="foot__col" aria-label="Contacto">
-          <span class="foot__col-title mono">Contacto</span>
-          <a href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20informaci%C3%B3n." target="_blank" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>
+        <nav class="foot__col" aria-label="Contacto" data-i18n-aria="foot.contact">
+          <span class="foot__col-title mono" data-i18n="foot.contact">Contacto</span>
+          <a href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20informaci%C3%B3n." target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
           <a href="tel:+34655334170">+34 655 334 170</a>
         </nav>
 
-        <nav class="foot__col" aria-label="Legal">
-          <span class="foot__col-title mono">Legal</span>
-          <a href="legal.html#aviso-legal">Aviso legal</a>
-          <a href="legal.html#privacidad">Política de privacidad</a>
-          <a href="legal.html#cookies">Política de cookies</a>
-          <a href="legal.html#confidencialidad">Confidencialidad del contrato</a>
-          <a href="legal.html#seguridad">Seguridad</a>
+        <nav class="foot__col" aria-label="Legal" data-i18n-aria="foot.legal">
+          <span class="foot__col-title mono" data-i18n="foot.legal">Legal</span>
+          <a href="legal.html#aviso-legal" data-i18n="foot.l1">Aviso legal</a>
+          <a href="legal.html#privacidad" data-i18n="foot.l2">Política de privacidad</a>
+          <a href="legal.html#cookies" data-i18n="foot.l3">Política de cookies</a>
+          <a href="legal.html#confidencialidad" data-i18n="foot.l4">Confidencialidad del contrato</a>
+          <a href="legal.html#seguridad" data-i18n="foot.l5">Seguridad</a>
         </nav>
       </div>
 
       <div class="wrap foot__bottom mono">
-        <span>© 2026 Adrian Web · Todos los derechos reservados.</span>
-        <span>Diseñada a mano, no con plantillas.</span>
+        <span data-i18n="foot.copy">© 2026 Adrian Web · Todos los derechos reservados.</span>
+        <span data-i18n="foot.hand">Diseñada a mano, no con plantillas.</span>
       </div>
     </footer>
   </main>
 
   <!-- Discreet WhatsApp pill -->
-  <a class="wa-pill" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis." target="_blank" rel="noopener" aria-label="Escríbeme por WhatsApp">
+  <a class="wa-pill" href="https://wa.me/34655334170?text=Hola%20Adrian%2C%20quiero%20una%20demo%20gratis." target="_blank" rel="noopener noreferrer" aria-label="Escríbeme por WhatsApp" data-i18n-aria="wa.aria">
     <svg viewBox="0 0 32 32" width="19" height="19" aria-hidden="true"><path fill="currentColor" d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.7 1.9 6.7L3 29l7-1.8c1.9 1 4 1.6 6 1.6 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.1 1.1 1.1-4-.2-.4c-1-1.6-1.5-3.4-1.5-5.3C5.9 10.1 10.4 5.7 16 5.7s10.1 4.4 10.1 9.8-4.5 10.2-10.1 10.2z"/></svg>
-    <span>Escríbeme</span>
+    <span data-i18n="wa.label">Escríbeme</span>
   </a>
 
-  <script src="script.js"></script>
+  <script src="chatbot-widget/loader.js" data-gemini-key="TU_API_KEY"></script>
 </body>
 </html>

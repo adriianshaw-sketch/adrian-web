@@ -207,7 +207,7 @@ a:focus-visible, .btn:focus-visible, button:focus-visible, summary:focus-visible
 .case__view:hover .browser { transform: translateY(-6px); box-shadow: 0 60px 120px -30px rgba(0,0,0,1); }
 .browser__bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #0e0e11; border-bottom: 1px solid var(--line); }
 .browser__bar .dot { width: 11px; height: 11px; border-radius: 50%; background: #2a2a30; }
-.browser__url { margin-left: 14px; color: var(--fog-2); font-size: .74rem; background: #17171b; padding: 4px 14px; border-radius: 999px; }
+.browser__url { margin-left: 14px; color: var(--fog); font-size: .74rem; background: #17171b; padding: 4px 14px; border-radius: 999px; }
 
 /* Mini-site canvas */
 .site { position: relative; aspect-ratio: 16 / 10; overflow: hidden; isolation: isolate; }
@@ -247,9 +247,9 @@ a:focus-visible, .btn:focus-visible, button:focus-visible, summary:focus-visible
 .site__h1--forja { text-transform: uppercase; font-weight: 800; letter-spacing: -.01em; font-size: clamp(1.7rem, 5.4vw, 3.4rem); }
 .site__btn { align-self: flex-start; font-size: clamp(.58rem, 1.2vw, .8rem); font-weight: 600; padding: clamp(7px,1.3vw,11px) clamp(14px,2.4vw,22px); border-radius: 999px; }
 .site__hero--center .site__btn { align-self: center; }
-.site__btn--warm { background: #E0673A; color: #fff; }
-.site__btn--forja { background: var(--cobalt); color: #fff; border-radius: 3px; text-transform: uppercase; letter-spacing: .06em; }
-.site__btn--teal { background: #0E8C8C; color: #fff; }
+.site__btn--warm { background: #C4522A; color: #fff; }
+.site__btn--forja { background: #3666F5; color: #fff; border-radius: 3px; text-transform: uppercase; letter-spacing: .06em; }
+.site__btn--teal { background: #0C7C7C; color: #fff; }
 
 /* Chips glass flotantes: producto vivo dentro de cada preview */
 .site__chip {
@@ -282,12 +282,12 @@ a:focus-visible, .btn:focus-visible, button:focus-visible, summary:focus-visible
 .site--vida { background: var(--paper); display: flex; flex-direction: column; }
 .site__nav--light { padding: 3.5% 4.5%; }
 .site__logo--vida { color: #15332F; font-weight: 700; letter-spacing: -.01em; text-transform: none; font-size: clamp(.85rem,2vw,1.2rem); }
-.site__logo--vida span { color: #0E8C8C; font-weight: 500; }
+.site__logo--vida span { color: #0A6E6E; font-weight: 500; }
 .site__menu--light a { color: #3A4B48; }
-.site__menu--light .pill { background: #0E8C8C; color: #fff; padding: 5px 13px; border-radius: 999px; }
+.site__menu--light .pill { background: #0C7C7C; color: #fff; padding: 5px 13px; border-radius: 999px; }
 .site__split { flex: 1; display: grid; grid-template-columns: 1.1fr 1fr; gap: 4%; padding: 0 4.5% 4%; align-items: center; }
 .site__split-text { display: flex; flex-direction: column; gap: clamp(7px,1.4vw,14px); }
-.site__eyebrow--dark { color: #0E8C8C; }
+.site__eyebrow--dark { color: #0A6E6E; }
 .site__h1--dark { color: #15332F; }
 .site__p { color: #3A4B48; font-size: clamp(.6rem,1.2vw,.82rem); max-width: 30ch; }
 .site__split-img { height: 100%; border-radius: 10px; overflow: hidden; }
@@ -716,4 +716,111 @@ body.has-cursor, body.has-cursor a, body.has-cursor .case__view { cursor: none; 
   [data-reveal], .hero [data-line] { opacity: 1 !important; transform: none !important; }
   .tag__dot { animation: none !important; }
   .rev::before { display: none; }
+}
+
+/* ============================================================
+   EVOLUCIÓN — selector de idioma, entrada del hero, modo ligero
+   (añadido; nada de lo anterior se sustituye)
+   ============================================================ */
+
+/* ---------- Selector ES / EN ---------- */
+.lang {
+  display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0;
+  border: 1px solid var(--line-2); border-radius: 2px; padding: 2px;
+}
+.lang__btn {
+  font-family: var(--f-mono); font-size: .74rem; line-height: 1; letter-spacing: .04em;
+  color: var(--fog); padding: 7px 9px; border-radius: 1px;
+  transition: color .3s var(--ease), background .3s var(--ease);
+}
+.lang__btn:hover { color: var(--chalk); }
+.lang__btn.is-on { color: var(--ink); background: var(--chalk); }
+.lang__btn:focus-visible { outline: 2px solid var(--cobalt-soft); outline-offset: 2px; }
+
+/* ---------- HeroLoadReveal: titular por líneas + hairline que se traza ---------- */
+.hero__foot { position: relative; border-top-color: transparent; }
+.hero__foot::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: var(--line); transform: scaleX(0); transform-origin: left;
+  transition: transform 1.2s var(--ease) .55s;
+}
+.hero.is-ready .hero__foot::before { transform: scaleX(1); }
+/* las líneas del titular entran desde su propia máscara, con foco que se resuelve */
+.hero.is-ready .line > span { animation: riseline 1.15s var(--ease) both; }
+@keyframes riseline {
+  from { opacity: 0; transform: translate3d(0, 112%, 0) skewY(2.4deg); filter: blur(9px); }
+  55%  { filter: blur(0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) skewY(0); filter: blur(0); }
+}
+/* will-change se pone y se retira desde JS; aquí solo el estado en reposo */
+.hero.is-settled .line > span,
+.hero.is-settled .hero__lead,
+.hero.is-settled .hero__cta,
+.hero.is-settled .hero__meta { will-change: auto; }
+
+/* ---------- CTA magnético: el transform lo gobierna el muelle, no el hover ---------- */
+.btn--magnetic { transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
+.btn--magnetic:hover { transform: none; }
+
+/* ---------- WhatsApp: a la izquierda para no chocar con el chat ---------- */
+.wa-pill { right: auto; left: 22px; }
+@media (max-width: 600px) { .wa-pill { left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); } }
+
+/* ---------- Nav: hueco para el selector en pantallas estrechas ---------- */
+@media (max-width: 940px) {
+  /* el selector toma el hueco libre y el burger se pega a él, no al borde suelto */
+  .lang { margin-left: auto; }
+  .burger { margin-left: 0; }
+  /* con el menú abierto, la fila superior sigue por encima del telón:
+     el idioma y el botón de cerrar nunca quedan tapados */
+  .nav__row { position: relative; z-index: 46; }
+  /* el telón deja libre la altura de la barra: nada se solapa con la marca */
+  /* centrado con márgenes automáticos: en pantallas bajas desborda hacia abajo
+     y se puede scrollear, nunca recorta por arriba (bug clásico de flex+center) */
+  .nav.is-open .nav__drawer {
+    padding-top: 90px; padding-bottom: 40px;
+    justify-content: flex-start; overflow-y: auto; overscroll-behavior: contain;
+  }
+  .nav.is-open .nav__drawer > a:first-child { margin-top: auto; }
+  .nav.is-open .nav__drawer > .drawer__cta { margin-bottom: auto; }
+}
+/* el FAB del chat no compite con el menú a pantalla completa ni con la píldora */
+.nav.is-open ~ .cbw-fab,
+body:has(.nav.is-open) .cbw-fab { opacity: 0; pointer-events: none; }
+body:has(.nav.is-open) .wa-pill { opacity: 0; pointer-events: none; }
+@media (max-width: 600px) {
+  .nav__row { gap: 14px; }
+  .lang__btn { padding: 7px 8px; font-size: .72rem; }
+}
+
+/* ---------- Modo ligero: gama baja, ahorro de datos, poca memoria ----------
+   Fuera todo lo que cuesta pintar (blur, grano, sombras largas). El sitio
+   sigue siendo el mismo, solo deja de pagar por efectos que no se notan. */
+html[data-lite] .grain { display: none; }
+html[data-lite] .site::after { display: none; }
+html[data-lite] .cursor { display: none !important; }
+html[data-lite] .nav.is-scrolled { background: rgba(11,11,12,.96); backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-lite] .nav__drawer { background: var(--ink); backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-lite] .site__chip { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(16,16,20,.84); }
+html[data-lite] .site__chip--vida { background: rgba(255,255,255,.96); }
+html[data-lite] .cursor.is-hot { backdrop-filter: none; }
+html[data-lite] .browser { box-shadow: 0 22px 46px -26px rgba(0,0,0,.9); }
+html[data-lite] .close::after { display: none; }
+html[data-lite] .btn--beacon::after { filter: none; opacity: .32; }
+html[data-lite] .growth__line { filter: drop-shadow(0 0 5px rgba(74,222,128,.7)); }
+html[data-lite] .growth__dot { filter: none; }
+html[data-lite] [data-reveal].head__title,
+html[data-lite] [data-reveal].manifesto__text,
+html[data-lite] [data-reveal].quote__text { filter: none; }
+html[data-lite] .rev::before { display: none; }
+
+/* ---------- Reduced motion: estado final también en lo nuevo ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__foot::before { transform: none !important; transition: none !important; }
+  .hero .line > span { animation: none !important; filter: none !important; }
+  .case[data-reveal] .browser { clip-path: none !important; }
+  .case__spark-line { stroke-dashoffset: 0 !important; }
+  .case__spark-area { opacity: 1 !important; }
+  [data-reveal].head__title, [data-reveal].manifesto__text, [data-reveal].quote__text { filter: none !important; }
+  .lang__btn, .wa-pill, .rev, .promise__item, .browser { transition: none !important; }
 }
