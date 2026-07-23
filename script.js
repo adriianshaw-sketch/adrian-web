@@ -62,6 +62,9 @@ var AW = (function () {
       'live.title': 'Webs ya publicadas.<br>Míralas funcionando.',
       'live.note': 'Proyectos reales, online ahora mismo. Ábrelos y navégalos tú.',
       'live.go': 'Visitar la web',
+      'live.t1': 'Restaurante · Barcelona',
+      'live.t2': 'Concept store · Málaga',
+      'live.t3': 'Café bar · Benidorm',
       'case.cta': '→ Quiero una web así para mi negocio',
 
       'c1.imgAlt': 'Interior del restaurante Brasa',
@@ -235,6 +238,9 @@ var AW = (function () {
       'live.title': 'Websites already live.<br>See them in action.',
       'live.note': 'Real projects, online right now. Open them and explore.',
       'live.go': 'Visit the site',
+      'live.t1': 'Restaurant · Barcelona',
+      'live.t2': 'Concept store · Málaga',
+      'live.t3': 'Café bar · Benidorm',
       'case.cta': '→ I want a site like this for my business',
 
       'c1.imgAlt': 'Inside the Brasa restaurant',
